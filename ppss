@@ -137,6 +137,8 @@ REGISTER=""                               # For STACK
 STACK=""
 TMP_STACK=""
 
+USE_PID_FILE="0"
+
 showusage_short () {
 
     echo
@@ -751,6 +753,10 @@ process_arguments () {
                             echo "$SCRIPT_NAME version $SCRIPT_VERSION"
                             echo ""
                             exit 0 ;;
+            --pidfile )
+                            USE_PID_FILE="1"
+                            add_var_to_config USE_PID_FILE "$USE_PID_FILE"
+                            shift 1 ;;
             * )
                             
                             showusage_short

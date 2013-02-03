@@ -137,6 +137,7 @@ REGISTER=""                               # For STACK
 STACK=""
 TMP_STACK=""
 
+PID_FILE="$PPSS_DIR/ppss.pid"
 USE_PID_FILE="0"
 
 showusage_short () {
@@ -453,6 +454,11 @@ cleanup () {
     if [[ ! -z "$SSH_MASTER_PID" ]] 
     then
         kill "$SSH_MASTER_PID"
+    fi
+
+    if [[ -e "$PID_FILE" ]]
+    then
+        rm "$PID_FILE"
     fi
 }
 
@@ -1109,6 +1115,10 @@ init_vars () {
         mkdir -p "$PPSS_NODE_STATUS"
     fi
 
+    if [[ ! -z "$USE_PID_FILE" ]]
+    then
+        echo "$PID" > "$PID_FILE"
+    fi
 }
 
 upload_status () {

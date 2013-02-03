@@ -137,6 +137,8 @@ REGISTER=""                               # For STACK
 STACK=""
 TMP_STACK=""
 
+INOTIFY_EVENT_LIST="close"
+
 showusage_short () {
 
     echo
@@ -318,6 +320,10 @@ showusage_extended_body () {
     echo -e "--randomize | -R   Randomise which items to process by the client in distributed mode."
     echo -e "                   This makes sure that with many nodes, it is prevented that some"
     echo -e "                   clients spend all their time trying to get a lock on an item."
+    echo
+    echo -e "--inotifyevents    A comma-seperated list, without spaces, of inotify events to expect."
+    echo -e "                   Example: \"close,attrib,unmount\""
+    echo -e "                   The default is '$INOTIFY_EVENT_LIST'."
     echo
     echo -e "Example: encoding some wav files to mp3 using lame:"
     echo 
@@ -748,6 +754,10 @@ process_arguments () {
                             echo "$SCRIPT_NAME version $SCRIPT_VERSION"
                             echo ""
                             exit 0 ;;
+            --inotifyevents)
+                            INOTIFY_EVENT_LIST="$2"
+                            add_var_to_config INOTIFY_EVENT_LIST "$INOTIFY_EVENT_LIST"
+                            shift 2 ;;
             * )
                             
                             showusage_short
@@ -2603,7 +2613,7 @@ terminate_listener () {
 }
 
 inotify_listener () {
-    inotifywait "$SRC_DIR" -m -r -e close -q --format '%w%f' | \
+    inotifywait "$SRC_DIR" -m -r -e "$INOTIFY_EVENT_LIST" -q --format '%w%f' | \
     while read -r line
     do
         if [[ ! -d "$line" ]] 

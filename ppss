@@ -319,6 +319,9 @@ showusage_extended_body () {
     echo -e "                   This makes sure that with many nodes, it is prevented that some"
     echo -e "                   clients spend all their time trying to get a lock on an item."
     echo
+    echo -e "--pidfile          Generate a file containing the parent pid."
+    echo -e "                   The is named 'ppss.pid', and is located in the home directory."
+    echo
     echo -e "Example: encoding some wav files to mp3 using lame:"
     echo 
     echo -e "$0 -c 'lame ' -d /path/to/wavfiles -j " 

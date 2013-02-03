@@ -1115,7 +1115,7 @@ init_vars () {
         mkdir -p "$PPSS_NODE_STATUS"
     fi
 
-    if [[ ! -z "$USE_PID_FILE" ]]
+    if [[ "$USE_PID_FILE" == "1" ]]
     then
         echo "$PID" > "$PID_FILE"
     fi

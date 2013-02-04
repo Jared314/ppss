@@ -2415,10 +2415,13 @@ infanticide () {
     # process as defined by $PID. All processes that have ever been
     # spawned, although disowned or backgrounded will be killed...
     #
-    # SWB: Fix ps command on Solaris, uses -e instead of a for all procs
-    # and "comm" instead of "command" in the format specification.
-    if [[ "$ARCH" == "SunOS" ]]
+    if [[ "$USE_PID_FILE" == "1" &&  -e "$PID_FILE" ]]
+    then
+        PROCLIST=$(<"$PID_FILE")
+    elif [[ "$ARCH" == "SunOS" ]]
     then 
+        # SWB: Fix ps command on Solaris, uses -e instead of a for all procs
+        # and "comm" instead of "command" in the format specification.
         PROCLIST=$(ps -e -o pid,pgid,ppid,comm | grep [0-9] | grep $PID | grep -v -i grep)
     else
         PROCLIST=$(ps a -o pid,pgid,ppid,command | grep [0-9] | grep $PID | grep -v -i grep)

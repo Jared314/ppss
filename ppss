@@ -2468,6 +2468,7 @@ run_command () {
             MYPID="$!"
             disown
             PIDS="$PIDS $MYPID"
+            [[ "$USE_PID_FILE" == "1" ]] && echo $MYPID >> "$PID_FILE"
             ((ACTIVE_WORKERS++))
             log DEBUG "Increasing active workers to $ACTIVE_WORKERS"
             echo "$INPUT" >> "$LIST_OF_PROCESSED_ITEMS"
@@ -2717,6 +2718,7 @@ start_daemon_listener () {
     MYPID="$!"
     disown
     PIDS="$PIDS $MYPID"
+    [[ "$USE_PID_FILE" == "1" ]] && echo $MYPID >> "$PID_FILE"
 }
 
 start_inotify_listener () {
@@ -2726,6 +2728,7 @@ start_inotify_listener () {
     MYPID="$!"
     disown
     PIDS="$PIDS $MYPID"
+    [[ "$USE_PID_FILE" == "1" ]] && echo $MYPID >> "$PID_FILE"
 }
 
 start_as_daemon () {
